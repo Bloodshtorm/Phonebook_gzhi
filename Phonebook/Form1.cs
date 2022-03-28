@@ -14,7 +14,7 @@ namespace Phonebook
     {
         ///Переменная для отображения
         public static bool adm_priv = false;
-        public static string connStr = "Server=localhost; Port = 5432; Database=bars_bd;User ID=postgres;Password=1234;CommandTimeout=60000;";
+        public static string connStr = "Server=10.0.77.14; Port = 5432; Database=bars_bd;User ID=postgres;Password=1234;CommandTimeout=60000;";
         public Form1()
         {
             InitializeComponent();
@@ -30,31 +30,47 @@ namespace Phonebook
                             join b4_otdel o on o.id=u.id_otdel
                             join b4_control c on c.id= u.id_control
                             ORDER BY 1";
+            try
+            {
+                NpgsqlConnection conn = new NpgsqlConnection(connStr);
+                NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+                NpgsqlDataAdapter sqlDataAdap = new NpgsqlDataAdapter(cmd);
 
-            NpgsqlConnection conn = new NpgsqlConnection(connStr);
-            NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            NpgsqlDataAdapter sqlDataAdap = new NpgsqlDataAdapter(cmd);
+                DataTable dtRecord = new DataTable();
+                sqlDataAdap.Fill(dtRecord);
+                dataGridView1.DataSource = dtRecord;
+                //наименование столбцов
+                dataGridView1.Columns[0].HeaderText = "Ид юзера";
+                dataGridView1.Columns[1].HeaderText = "ФИО";
+                dataGridView1.Columns[2].HeaderText = "Офис";
+                dataGridView1.Columns[3].HeaderText = "Телефон";
+                dataGridView1.Columns[4].HeaderText = "Ид должности";
+                dataGridView1.Columns[5].HeaderText = "Должность";
+                dataGridView1.Columns[6].HeaderText = "Ид отдела";
+                dataGridView1.Columns[7].HeaderText = "Отдел";
+                dataGridView1.Columns[8].HeaderText = "Ид управления";
+                dataGridView1.Columns[9].HeaderText = "Управление";
+                dataGridView1.Columns[10].HeaderText = "Эл.почта";
+                dataGridView1.Columns[11].HeaderText = "Эл.почта пароль";
+                dataGridView1.Columns[12].HeaderText = "Имя ПК";
+                dataGridView1.Columns[13].HeaderText = "Пароль ПК";
+                dataGridView1.Columns[14].HeaderText = "IP адрес";
+                close_open_column(adm_priv);
+            }
+            catch (System.ArgumentOutOfRangeException sore)
+            {
+                MessageBox.Show("Подключение неактивно");
+            }
+            catch (Exception ex)
+            {
+                Encoding utf = Encoding.UTF8;
+                Encoding win = Encoding.GetEncoding(1251);
 
-            DataTable dtRecord = new DataTable();
-            sqlDataAdap.Fill(dtRecord);
-            dataGridView1.DataSource = dtRecord;
-            //наименование столбцов
-            dataGridView1.Columns[0].HeaderText = "Ид юзера";
-            dataGridView1.Columns[1].HeaderText = "ФИО";
-            dataGridView1.Columns[2].HeaderText = "Офис";
-            dataGridView1.Columns[3].HeaderText = "Телефон";
-            dataGridView1.Columns[4].HeaderText = "Ид должности";
-            dataGridView1.Columns[5].HeaderText = "Должность";
-            dataGridView1.Columns[6].HeaderText = "Ид отдела";
-            dataGridView1.Columns[7].HeaderText = "Отдел";
-            dataGridView1.Columns[8].HeaderText = "Ид управления";
-            dataGridView1.Columns[9].HeaderText = "Управление";
-            dataGridView1.Columns[10].HeaderText = "Эл.почта";
-            dataGridView1.Columns[11].HeaderText = "Эл.почта пароль";
-            dataGridView1.Columns[12].HeaderText = "Имя ПК";
-            dataGridView1.Columns[13].HeaderText = "Пароль ПК";
-            dataGridView1.Columns[14].HeaderText = "IP адрес";
-            close_open_column(adm_priv);
+                byte[] winArr = Encoding.Convert(win, utf, utf.GetBytes(ex.Message));
+
+                MessageBox.Show(ex.Message); 
+            }
+            
         }
         private void close_open_column(bool val)
         {
@@ -67,7 +83,6 @@ namespace Phonebook
             dataGridView1.Columns[13].Visible = val;
             dataGridView1.Columns[14].Visible = val;
 
-            
         }
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
