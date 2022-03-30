@@ -13,7 +13,7 @@ namespace Phonebook
     public partial class Form1 : Form
     {
         ///Переменная для отображения
-        public static bool adm_priv = false;
+        public static Privilages adm_priv = Privilages.User;
         public static string connStr = "Server=10.0.77.14; Port = 5432; Database=bars_bd;User ID=postgres;Password=1234;CommandTimeout=60000;";
         public Form1()
         {
@@ -72,17 +72,34 @@ namespace Phonebook
             }
             
         }
-        private void close_open_column(bool val)
+        private void close_open_column(Privilages val)
         {
-            dataGridView1.Columns[0].Visible = val;
-            dataGridView1.Columns[4].Visible = val;
-            dataGridView1.Columns[6].Visible = val;
-            dataGridView1.Columns[8].Visible = val;
-            dataGridView1.Columns[11].Visible = val;
-            dataGridView1.Columns[12].Visible = val;
-            dataGridView1.Columns[13].Visible = val;
-            dataGridView1.Columns[14].Visible = val;
+            if (val == Privilages.User)
+            {
+                dataGridView1.Columns[0].Visible = false;
+                dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[6].Visible = false;
+                dataGridView1.Columns[8].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[13].Visible = false;
+                dataGridView1.Columns[14].Visible = false;
+            }
+            else
+            {
+                dataGridView1.Columns[0].Visible = false;
+                dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[6].Visible = false;
+                dataGridView1.Columns[8].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[13].Visible = false;
+                dataGridView1.Columns[14].Visible = false;
 
+                //будущее
+                //if (val == Privilages.User)
+
+            }
         }
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -100,12 +117,12 @@ namespace Phonebook
                 {
                     //adm_priv = true;
                     close_open_column(adm_priv);
-                    adminToolStripMenuItem.Checked = adm_priv;
+                    adminToolStripMenuItem.Checked = true;
                 }
             }
             else if (adminToolStripMenuItem.Checked == true)
             {
-                adm_priv = false;
+                adm_priv = Privilages.User;
                 close_open_column(adm_priv);
                 adminToolStripMenuItem.Checked = false;
             }
@@ -180,6 +197,13 @@ namespace Phonebook
                 (dataGridView1.DataSource as DataTable).DefaultView.RowFilter = null;
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public enum Privilages
+        {
+            Dev=1,
+            Dev_jun=2,
+            User=3
         }
     }
 }

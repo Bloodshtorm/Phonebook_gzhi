@@ -12,26 +12,41 @@ namespace Phonebook
 {
     public partial class Edit_user : Form
     {
-        public Edit_user(bool adm_priv, int id_user)
+        public Edit_user(Form1.Privilages adm_priv, int id_user)
         {
             InitializeComponent();
             button1.DialogResult = DialogResult.OK;
             button2.DialogResult = DialogResult.Cancel;
 
-            if(!adm_priv)
+            if(adm_priv==Form1.Privilages.User)
             {
-                label15.Visible = adm_priv;
-                label10.Visible = adm_priv;
-                label11.Visible = adm_priv;
-                label12.Visible = adm_priv;
-                textBox5.Visible = adm_priv;
-                textBox6.Visible = adm_priv;
-                textBox7.Visible = adm_priv;
-                textBox8.Visible = adm_priv;
-                label8.Visible = adm_priv;
-                label7.Visible = adm_priv;
-                label13.Visible = adm_priv;
-                label14.Visible = adm_priv;
+                label15.Visible = false;
+                label10.Visible = false;
+                label11.Visible = false;
+                label12.Visible = false;
+                textBox5.Visible = false;
+                textBox6.Visible = false;
+                textBox7.Visible = false;
+                textBox8.Visible = false;
+                label8.Visible = false;
+                label7.Visible = false;
+                label13.Visible = false;
+                label14.Visible = false;
+            }
+            else
+            {
+                label15.Visible = true;
+                label10.Visible = true;
+                label11.Visible = true;
+                label12.Visible = true;
+                textBox5.Visible = true;
+                textBox6.Visible = true;
+                textBox7.Visible = true;
+                textBox8.Visible = true;
+                label8.Visible = true;
+                label7.Visible = true;
+                label13.Visible = true;
+                label14.Visible = true;
             }
 
             string connStr = Form1.connStr;
