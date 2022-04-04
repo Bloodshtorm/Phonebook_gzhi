@@ -93,6 +93,7 @@ namespace Phonebook
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Администратор",
@@ -102,6 +103,7 @@ namespace Phonebook
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(261, 21);
             this.comboBox1.TabIndex = 6;
+            this.comboBox1.Visible = false;
             // 
             // Admin_privilege
             // 

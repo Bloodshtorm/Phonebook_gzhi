@@ -52,11 +52,8 @@ namespace Phonebook
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.adminoptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dictionaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adduserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.отделыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.управленияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.должностиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выгрузкаВEXCELToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +64,7 @@ namespace Phonebook
             this.updateToolStripMenuItem,
             this.optionToolStripMenuItem,
             this.adminoptionToolStripMenuItem,
-            this.dictionaryToolStripMenuItem});
+            this.выгрузкаВEXCELToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
@@ -259,16 +256,6 @@ namespace Phonebook
             this.adminoptionToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.adminoptionToolStripMenuItem.Text = "Свойства";
             // 
-            // dictionaryToolStripMenuItem
-            // 
-            this.dictionaryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.отделыToolStripMenuItem,
-            this.управленияToolStripMenuItem,
-            this.должностиToolStripMenuItem});
-            this.dictionaryToolStripMenuItem.Name = "dictionaryToolStripMenuItem";
-            this.dictionaryToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
-            this.dictionaryToolStripMenuItem.Text = "Справочники";
-            // 
             // adduserToolStripMenuItem
             // 
             this.adduserToolStripMenuItem.Name = "adduserToolStripMenuItem";
@@ -276,23 +263,11 @@ namespace Phonebook
             this.adduserToolStripMenuItem.Text = "Добавить пользователя";
             this.adduserToolStripMenuItem.Click += new System.EventHandler(this.adduserToolStripMenuItem_Click);
             // 
-            // отделыToolStripMenuItem
+            // выгрузкаВEXCELToolStripMenuItem
             // 
-            this.отделыToolStripMenuItem.Name = "отделыToolStripMenuItem";
-            this.отделыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.отделыToolStripMenuItem.Text = "Отделы";
-            // 
-            // управленияToolStripMenuItem
-            // 
-            this.управленияToolStripMenuItem.Name = "управленияToolStripMenuItem";
-            this.управленияToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.управленияToolStripMenuItem.Text = "Управления";
-            // 
-            // должностиToolStripMenuItem
-            // 
-            this.должностиToolStripMenuItem.Name = "должностиToolStripMenuItem";
-            this.должностиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.должностиToolStripMenuItem.Text = "Должности";
+            this.выгрузкаВEXCELToolStripMenuItem.Name = "выгрузкаВEXCELToolStripMenuItem";
+            this.выгрузкаВEXCELToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.выгрузкаВEXCELToolStripMenuItem.Text = "Выгрузка в EXCEL";
             // 
             // Form1
             // 
@@ -355,10 +330,7 @@ namespace Phonebook
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ToolStripMenuItem adminoptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem adduserToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dictionaryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem отделыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem управленияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem должностиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выгрузкаВEXCELToolStripMenuItem;
     }
 }
 

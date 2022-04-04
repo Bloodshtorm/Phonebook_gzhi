@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -19,6 +20,27 @@ namespace Phonebook
         {
             InitializeComponent();
             Data();
+            SetDoubleBuffered(dataGridView1, true); //плавный скролл
+        }
+        public void SetDoubleBuffered(Control c, bool value)
+        {
+            PropertyInfo pi = typeof(Control).GetProperty("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic);
+            if (pi != null)
+            {
+                pi.SetValue(c, value, null);
+
+                MethodInfo mi = typeof(Control).GetMethod("SetStyle", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
+                if (mi != null)
+                {
+                    mi.Invoke(c, new object[] { ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true });
+                }
+
+                mi = typeof(Control).GetMethod("UpdateStyles", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
+                if (mi != null)
+                {
+                    mi.Invoke(c, null);
+                }
+            }
         }
         private void Data()
         {
@@ -87,7 +109,7 @@ namespace Phonebook
                 dataGridView1.Columns[13].Visible = false;
                 dataGridView1.Columns[14].Visible = false;
                 adminoptionToolStripMenuItem.Visible = false;
-                dictionaryToolStripMenuItem.Visible = false;
+                updateToolStripMenuItem.Visible = false;
             }
             else
             {
@@ -103,7 +125,7 @@ namespace Phonebook
                     dataGridView1.Columns[13].Visible = true;
                     dataGridView1.Columns[14].Visible = true;
                     adminoptionToolStripMenuItem.Visible = true;
-                    dictionaryToolStripMenuItem.Visible = true;
+                    updateToolStripMenuItem.Visible = true;
                 }
             }
             
@@ -214,7 +236,8 @@ namespace Phonebook
 
         private void adduserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Admin_privilege adm = new Admin_privilege(true);
+            adm.ShowDialog();
         }
     }
 }
