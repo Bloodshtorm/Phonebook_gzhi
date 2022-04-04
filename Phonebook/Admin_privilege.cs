@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,26 +16,72 @@ namespace Phonebook
         private const int SaltByteSize = 24;//для лучшего хэширования
         private const int HashByteSize = 24;
         private const int HasingIterationsCount = 10101;
+        private static bool add_user { get; set; }
 
-        public Admin_privilege()
+        public Admin_privilege(bool option1)
         {
             InitializeComponent();
+            add_user = option1;
+            if(option1)
+            {
+                comboBox1.Visible = true;
+                button1.Text = "Добавить пользователя";
+
+            }
             button2.DialogResult = DialogResult.Cancel;
             button1.DialogResult = DialogResult.OK;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "25121985")
+            string login = textBox2.Text;
+            string bd_hash = "";
+            //string s = (HashPassword(textBox1.Text));
+            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr);
+            NpgsqlCommand cmd = new NpgsqlCommand($"SELECT u.hash, u.role FROM public.user u where u.login = '{login}';", conn);
+            conn.Open();
+            if (!add_user)
             {
-                //Form1.adm_priv = true;
-                //button1.DialogResult = DialogResult.OK;
+                try
+                {
+                    using (NpgsqlDataReader ndr = cmd.ExecuteReader())
+                    {
+                        if (ndr.HasRows) // если есть данные
+                        {
+                            while (ndr.Read()) // построчно считываем данные
+                            {
+                                bd_hash = ndr.GetValue(0).ToString();
+                                if (VerifyHashedPassword(bd_hash, textBox1.Text))
+                                {
+                                    Form1.adm_priv = (Form1.Privilages)Enum.Parse(typeof(Form1.Privilages), ndr.GetValue(1).ToString(), true);
+                                    //button1.DialogResult = DialogResult.OK;
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    Form1.adm_priv = Form1.Privilages.User;
+                                    MessageBox.Show("Ошибка пароля");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Указанный логин не найден!");
+                        }
+                    }
+                }
+                catch (Exception s)
+                {
+                    MessageBox.Show(s.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }
             else
             {
-                MessageBox.Show("Пароль неверный");
-                //button1.DialogResult = DialogResult.Cancel;
-                //Form1.adm_priv = false;
+                MessageBox.Show("");
             }
         }
 
@@ -43,15 +90,8 @@ namespace Phonebook
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            string s = (HashPassword(textBox1.Text));
-        }
-
         public static string HashPassword(string password)
         {
-            // http://.com/questions/19957176/asp-net-identity-password-hashing
-
             byte[] salt;
             byte[] buffer2;
             if (password == null)
@@ -116,9 +156,5 @@ namespace Phonebook
             return 0 == xor;
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            bool z = VerifyHashedPassword(textBox1.Text, textBox2.Text);
-        }
     }
 }

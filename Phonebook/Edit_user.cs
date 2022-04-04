@@ -18,7 +18,7 @@ namespace Phonebook
             button1.DialogResult = DialogResult.OK;
             button2.DialogResult = DialogResult.Cancel;
 
-            if(adm_priv==Form1.Privilages.User)
+            if (adm_priv == Form1.Privilages.User)
             {
                 label15.Visible = false;
                 label10.Visible = false;
@@ -32,21 +32,33 @@ namespace Phonebook
                 label7.Visible = false;
                 label13.Visible = false;
                 label14.Visible = false;
+                button1.Visible = false;
+                button2.Visible = false;
+                button3.Visible = false;
+                button4.Visible = false;
             }
             else
             {
-                label15.Visible = true;
-                label10.Visible = true;
-                label11.Visible = true;
-                label12.Visible = true;
-                textBox5.Visible = true;
-                textBox6.Visible = true;
-                textBox7.Visible = true;
-                textBox8.Visible = true;
-                label8.Visible = true;
-                label7.Visible = true;
-                label13.Visible = true;
-                label14.Visible = true;
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button4.Visible = true;
+
+                if (adm_priv == Form1.Privilages.Admin)
+                {
+                    label15.Visible = true;
+                    label10.Visible = true;
+                    label11.Visible = true;
+                    label12.Visible = true;
+                    textBox5.Visible = true;
+                    textBox6.Visible = true;
+                    textBox7.Visible = true;
+                    textBox8.Visible = true;
+                    label8.Visible = true;
+                    label7.Visible = true;
+                    label13.Visible = true;
+                    label14.Visible = true;
+                }
             }
 
             string connStr = Form1.connStr;

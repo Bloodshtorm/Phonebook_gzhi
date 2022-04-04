@@ -41,8 +41,8 @@ namespace Phonebook
                 dataGridView1.DataSource = dtRecord;
                 //наименование столбцов
                 dataGridView1.Columns[0].HeaderText = "Ид юзера";
-                dataGridView1.Columns[1].HeaderText = "ФИО";
-                dataGridView1.Columns[2].HeaderText = "Офис";
+                dataGridView1.Columns[1].HeaderText = "ФИО сотрудника";
+                dataGridView1.Columns[2].HeaderText = "Местоположение";
                 dataGridView1.Columns[3].HeaderText = "Телефон";
                 dataGridView1.Columns[4].HeaderText = "Ид должности";
                 dataGridView1.Columns[5].HeaderText = "Должность";
@@ -55,11 +55,13 @@ namespace Phonebook
                 dataGridView1.Columns[12].HeaderText = "Имя ПК";
                 dataGridView1.Columns[13].HeaderText = "Пароль ПК";
                 dataGridView1.Columns[14].HeaderText = "IP адрес";
+
+                dataGridView1.Columns["name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 close_open_column(adm_priv);
             }
             catch (System.ArgumentOutOfRangeException sore)
             {
-                MessageBox.Show("Подключение неактивно");
+                MessageBox.Show("Подключение неактивно+\r\n"+sore.Message);
             }
             catch (Exception ex)
             {
@@ -84,22 +86,27 @@ namespace Phonebook
                 dataGridView1.Columns[12].Visible = false;
                 dataGridView1.Columns[13].Visible = false;
                 dataGridView1.Columns[14].Visible = false;
+                adminoptionToolStripMenuItem.Visible = false;
+                dictionaryToolStripMenuItem.Visible = false;
             }
             else
             {
-                dataGridView1.Columns[0].Visible = false;
-                dataGridView1.Columns[4].Visible = false;
-                dataGridView1.Columns[6].Visible = false;
-                dataGridView1.Columns[8].Visible = false;
-                dataGridView1.Columns[11].Visible = false;
-                dataGridView1.Columns[12].Visible = false;
-                dataGridView1.Columns[13].Visible = false;
-                dataGridView1.Columns[14].Visible = false;
-
+                dataGridView1.Columns[0].Visible = true;
+                dataGridView1.Columns[4].Visible = true;
+                dataGridView1.Columns[6].Visible = true;
+                dataGridView1.Columns[8].Visible = true;
                 //будущее
-                //if (val == Privilages.User)
-
+                if (val == Privilages.Admin)
+                {
+                    dataGridView1.Columns[11].Visible = true;
+                    dataGridView1.Columns[12].Visible = true;
+                    dataGridView1.Columns[13].Visible = true;
+                    dataGridView1.Columns[14].Visible = true;
+                    adminoptionToolStripMenuItem.Visible = true;
+                    dictionaryToolStripMenuItem.Visible = true;
+                }
             }
+            
         }
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -109,18 +116,17 @@ namespace Phonebook
 
         private void adminToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (adminToolStripMenuItem.Checked==false)
+            if (adminToolStripMenuItem.Checked == false)
             {
-                Admin_privilege adm = new Admin_privilege();
+                Admin_privilege adm = new Admin_privilege(false);
                 adm.ShowDialog();
-                if (adm.DialogResult == DialogResult.OK)
+                close_open_column(adm_priv);
+                if (adm_priv == Privilages.Admin || adm_priv == Privilages.Specialist)
                 {
-                    //adm_priv = true;
-                    close_open_column(adm_priv);
                     adminToolStripMenuItem.Checked = true;
                 }
             }
-            else if (adminToolStripMenuItem.Checked == true)
+            else
             {
                 adm_priv = Privilages.User;
                 close_open_column(adm_priv);
@@ -135,7 +141,7 @@ namespace Phonebook
 
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
         {
-            //MessageBox.Show(dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString());
+            //MessageBox.Show(Privilages.Dev.ToString());
             int z = (int)(dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value);
             Edit_user eu = new Edit_user(adm_priv, z);
             eu.ShowDialog();
@@ -201,9 +207,14 @@ namespace Phonebook
 
         public enum Privilages
         {
-            Dev=1,
-            Dev_jun=2,
+            Admin=1,
+            Specialist=2,
             User=3
+        }
+
+        private void adduserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

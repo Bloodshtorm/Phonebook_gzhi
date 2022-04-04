@@ -33,9 +33,9 @@ namespace Phonebook
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.updateToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -51,6 +51,12 @@ namespace Phonebook
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.adminoptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dictionaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adduserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отделыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.управленияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.должностиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -59,7 +65,9 @@ namespace Phonebook
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updateToolStripMenuItem,
-            this.optionToolStripMenuItem});
+            this.optionToolStripMenuItem,
+            this.adminoptionToolStripMenuItem,
+            this.dictionaryToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
@@ -82,22 +90,6 @@ namespace Phonebook
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionToolStripMenuItem.Text = "Опции";
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 79);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(1239, 507);
-            this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
-            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
-            // 
             // updateToolStripMenuItem1
             // 
             this.updateToolStripMenuItem1.Name = "updateToolStripMenuItem1";
@@ -112,12 +104,28 @@ namespace Phonebook
             this.adminToolStripMenuItem.Text = "Режим админа";
             this.adminToolStripMenuItem.Click += new System.EventHandler(this.adminToolStripMenuItem_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(13, 80);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(1239, 506);
+            this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
+            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1115, 51);
+            this.button1.Location = new System.Drawing.Point(1115, 38);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 23);
+            this.button1.Size = new System.Drawing.Size(137, 36);
             this.button1.TabIndex = 2;
             this.button1.Text = "Сбросить фильтр";
             this.button1.UseVisualStyleBackColor = true;
@@ -243,6 +251,49 @@ namespace Phonebook
             this.label7.TabIndex = 16;
             this.label7.Text = "Эл. почта";
             // 
+            // adminoptionToolStripMenuItem
+            // 
+            this.adminoptionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adduserToolStripMenuItem});
+            this.adminoptionToolStripMenuItem.Name = "adminoptionToolStripMenuItem";
+            this.adminoptionToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.adminoptionToolStripMenuItem.Text = "Свойства";
+            // 
+            // dictionaryToolStripMenuItem
+            // 
+            this.dictionaryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.отделыToolStripMenuItem,
+            this.управленияToolStripMenuItem,
+            this.должностиToolStripMenuItem});
+            this.dictionaryToolStripMenuItem.Name = "dictionaryToolStripMenuItem";
+            this.dictionaryToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.dictionaryToolStripMenuItem.Text = "Справочники";
+            // 
+            // adduserToolStripMenuItem
+            // 
+            this.adduserToolStripMenuItem.Name = "adduserToolStripMenuItem";
+            this.adduserToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.adduserToolStripMenuItem.Text = "Добавить пользователя";
+            this.adduserToolStripMenuItem.Click += new System.EventHandler(this.adduserToolStripMenuItem_Click);
+            // 
+            // отделыToolStripMenuItem
+            // 
+            this.отделыToolStripMenuItem.Name = "отделыToolStripMenuItem";
+            this.отделыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.отделыToolStripMenuItem.Text = "Отделы";
+            // 
+            // управленияToolStripMenuItem
+            // 
+            this.управленияToolStripMenuItem.Name = "управленияToolStripMenuItem";
+            this.управленияToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.управленияToolStripMenuItem.Text = "Управления";
+            // 
+            // должностиToolStripMenuItem
+            // 
+            this.должностиToolStripMenuItem.Name = "должностиToolStripMenuItem";
+            this.должностиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.должностиToolStripMenuItem.Text = "Должности";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -302,6 +353,12 @@ namespace Phonebook
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ToolStripMenuItem adminoptionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adduserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dictionaryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отделыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem управленияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem должностиToolStripMenuItem;
     }
 }
 
