@@ -17,6 +17,8 @@ namespace Phonebook
             InitializeComponent();
             button1.DialogResult = DialogResult.OK;
             button2.DialogResult = DialogResult.Cancel;
+            button3.DialogResult = DialogResult.OK;
+            button4.DialogResult = DialogResult.OK;
 
             if (adm_priv == Form1.Privilages.User)
             {
@@ -248,6 +250,24 @@ namespace Phonebook
             {
                 conn.Close();
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand($@"INSERT INTO public.b4_user(name, office_room, phone, id_position, id_otdel, id_control, email, email_pass, name_pc, pc_pass, ip_pc)
+            VALUES('{textBox1.Text}', '{textBox2.Text}', '{textBox3.Text}', {label10.Text}, {label11.Text}, {label12.Text}, '{textBox4.Text}', 
+            '{textBox5.Text}', '{textBox6.Text}', '{textBox7.Text}', '{textBox8.Text}')", conn);
+            cmd.ExecuteNonQuery();
+
+            
+    }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand($@"DELETE FROM public.b4_user WHERE id={label15.Text};", conn);
+            cmd.ExecuteNonQuery();
         }
     }
 }

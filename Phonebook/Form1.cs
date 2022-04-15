@@ -42,9 +42,8 @@ namespace Phonebook
                 }
             }
         }
-        private void Data()
+        public void Data()
         {
-            
             string cmdText = @"SELECT u.id, u.name, u.office_room, u.phone, u.id_position,p.name, 
                             u.id_otdel, o.name, u.id_control, c.name, u.email, u.email_pass, u.name_pc, u.pc_pass, u.ip_pc
                             FROM public.b4_user u
@@ -74,7 +73,7 @@ namespace Phonebook
                 dataGridView1.Columns[9].HeaderText = "Управление";
                 dataGridView1.Columns[10].HeaderText = "Эл.почта";
                 dataGridView1.Columns[11].HeaderText = "Эл.почта пароль";
-                dataGridView1.Columns[12].HeaderText = "Имя ПК";
+                dataGridView1.Columns[12].HeaderText = @"Имя ПК\Пользователь ПК";
                 dataGridView1.Columns[13].HeaderText = "Пароль ПК";
                 dataGridView1.Columns[14].HeaderText = "IP адрес";
 
@@ -238,6 +237,16 @@ namespace Phonebook
         {
             Admin_privilege adm = new Admin_privilege(true);
             adm.ShowDialog();
+        }
+
+        private void выгрузкаВEXCELToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

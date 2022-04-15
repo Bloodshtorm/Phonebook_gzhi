@@ -35,6 +35,9 @@ namespace Phonebook
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adminoptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adduserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выгрузкаВEXCELToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -51,9 +54,6 @@ namespace Phonebook
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.adminoptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.adduserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выгрузкаВEXCELToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -98,8 +98,30 @@ namespace Phonebook
             // 
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.adminToolStripMenuItem.Text = "Режим админа";
+            this.adminToolStripMenuItem.Text = "Войти...";
             this.adminToolStripMenuItem.Click += new System.EventHandler(this.adminToolStripMenuItem_Click);
+            // 
+            // adminoptionToolStripMenuItem
+            // 
+            this.adminoptionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adduserToolStripMenuItem});
+            this.adminoptionToolStripMenuItem.Name = "adminoptionToolStripMenuItem";
+            this.adminoptionToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.adminoptionToolStripMenuItem.Text = "Свойства";
+            // 
+            // adduserToolStripMenuItem
+            // 
+            this.adduserToolStripMenuItem.Name = "adduserToolStripMenuItem";
+            this.adduserToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.adduserToolStripMenuItem.Text = "Добавить пользователя";
+            this.adduserToolStripMenuItem.Click += new System.EventHandler(this.adduserToolStripMenuItem_Click);
+            // 
+            // выгрузкаВEXCELToolStripMenuItem
+            // 
+            this.выгрузкаВEXCELToolStripMenuItem.Name = "выгрузкаВEXCELToolStripMenuItem";
+            this.выгрузкаВEXCELToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.выгрузкаВEXCELToolStripMenuItem.Text = "Выгрузка в EXCEL";
+            this.выгрузкаВEXCELToolStripMenuItem.Click += new System.EventHandler(this.выгрузкаВEXCELToolStripMenuItem_Click);
             // 
             // dataGridView1
             // 
@@ -114,6 +136,7 @@ namespace Phonebook
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(1239, 506);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
             // 
@@ -247,27 +270,6 @@ namespace Phonebook
             this.label7.Size = new System.Drawing.Size(54, 13);
             this.label7.TabIndex = 16;
             this.label7.Text = "Эл. почта";
-            // 
-            // adminoptionToolStripMenuItem
-            // 
-            this.adminoptionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.adduserToolStripMenuItem});
-            this.adminoptionToolStripMenuItem.Name = "adminoptionToolStripMenuItem";
-            this.adminoptionToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.adminoptionToolStripMenuItem.Text = "Свойства";
-            // 
-            // adduserToolStripMenuItem
-            // 
-            this.adduserToolStripMenuItem.Name = "adduserToolStripMenuItem";
-            this.adduserToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.adduserToolStripMenuItem.Text = "Добавить пользователя";
-            this.adduserToolStripMenuItem.Click += new System.EventHandler(this.adduserToolStripMenuItem_Click);
-            // 
-            // выгрузкаВEXCELToolStripMenuItem
-            // 
-            this.выгрузкаВEXCELToolStripMenuItem.Name = "выгрузкаВEXCELToolStripMenuItem";
-            this.выгрузкаВEXCELToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
-            this.выгрузкаВEXCELToolStripMenuItem.Text = "Выгрузка в EXCEL";
             // 
             // Form1
             // 
