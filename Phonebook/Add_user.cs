@@ -10,14 +10,12 @@ using System.Windows.Forms;
 
 namespace Phonebook
 {
-    public partial class Edit_user : Form
+    public partial class Add_user : Form
     {
-        public Edit_user(Form1.Privilages adm_priv, int id_user)
+        public Add_user(Form1.Privilages adm_priv)
         {
             InitializeComponent();
-            button1.DialogResult = DialogResult.OK;
             button2.DialogResult = DialogResult.Cancel;
-            button3.DialogResult = DialogResult.OK;
             button4.DialogResult = DialogResult.OK;
 
             label15.Visible = false;
@@ -32,25 +30,19 @@ namespace Phonebook
             label7.Visible = false;
             label13.Visible = false;
             label14.Visible = false;
-            button1.Visible = false;
             button2.Visible = false;
-            button3.Visible = false;
             button4.Visible = false;
 
             if (adm_priv == Form1.Privilages.Specialist)
             {
-                button1.Visible = true;
                 button2.Visible = true;
-                button3.Visible = true;
                 button4.Visible = true;
             }
             else
             {
                 if (adm_priv == Form1.Privilages.Admin)
                 {
-                    button1.Visible = true;
                     button2.Visible = true;
-                    button3.Visible = true;
                     button4.Visible = true;
                     label15.Visible = true;
                     label10.Visible = true;
@@ -68,7 +60,6 @@ namespace Phonebook
             }
 
             string connStr = Form1.connStr;
-            string cmdText = $"SELECT * FROM public.b4_user where id={id_user};";
             //string cmdText = $"SELECT name FROM public.b4_position;";
             NpgsqlConnection conn = new NpgsqlConnection(connStr); conn.Open();
             NpgsqlCommand cmd = new NpgsqlCommand("SELECT id, name FROM public.b4_position order by 1;", conn);
@@ -114,89 +105,6 @@ namespace Phonebook
                 MessageBox.Show(ex.Message);
             }
 
-            cmd = new NpgsqlCommand(cmdText, conn);
-            try
-            {
-                using (NpgsqlDataReader ndr = cmd.ExecuteReader())
-                {
-                    if (ndr.HasRows) // если есть данные
-                    {
-                        while (ndr.Read()) // построчно считываем данные
-                        {
-                            label15.Text = ndr.GetValue(0).ToString();
-                            textBox1.Text = ndr.GetValue(1).ToString();
-                            textBox2.Text = ndr.GetValue(2).ToString();
-                            textBox3.Text = ndr.GetValue(3).ToString();
-                            label10.Text = ndr.GetValue(4).ToString();
-                            label11.Text = ndr.GetValue(5).ToString();
-                            label12.Text = ndr.GetValue(6).ToString();
-                            textBox4.Text = ndr.GetValue(7).ToString();
-                            textBox5.Text = ndr.GetValue(8).ToString();
-                            textBox6.Text = ndr.GetValue(9).ToString();
-                            textBox7.Text = ndr.GetValue(10).ToString();
-                            textBox8.Text = ndr.GetValue(11).ToString();
-
-                        }
-                    }
-                }
-                combo_value();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-        public void combo_value()
-        {
-
-            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
-            try
-            {
-                NpgsqlCommand cmd = new NpgsqlCommand($"SELECT name FROM public.b4_position where id={label10.Text};", conn);
-                //cmd = new NpgsqlCommand($"SELECT name FROM public.b4_position where id={label10.Text};", conn);
-                if (comboBox1.Items.Contains(cmd.ExecuteScalar().ToString()))
-                    comboBox1.SelectedItem = cmd.ExecuteScalar().ToString();
-                cmd = new NpgsqlCommand($"SELECT name FROM public.b4_otdel where id={label11.Text};", conn);
-                if (comboBox2.Items.Contains(cmd.ExecuteScalar().ToString()))
-                    comboBox2.SelectedItem = cmd.ExecuteScalar().ToString();
-                cmd = new NpgsqlCommand($"SELECT name FROM public.b4_control where id={label12.Text};", conn);
-                if (comboBox3.Items.Contains(cmd.ExecuteScalar().ToString()))
-                    comboBox3.SelectedItem = cmd.ExecuteScalar().ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (comboBox1.SelectedItem.ToString() == "")
-            {
-                label10.Text = "1";
-            }
-            if (comboBox2.SelectedItem.ToString() == "")
-            {
-                label11.Text = "1";
-            }
-            if (comboBox3.SelectedItem.ToString() == "")
-            {
-                label12.Text = "1";
-            }
-            //MessageBox.Show("dsa");
-            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand($@"UPDATE public.b4_user SET name='{textBox1.Text}', office_room='{textBox2.Text}', phone='{textBox3.Text}', 
-            id_position={label10.Text}, id_otdel={label11.Text}, id_control={label12.Text}, email='{textBox4.Text}', email_pass='{textBox5.Text}', 
-            name_pc='{textBox6.Text}', pc_pass='{textBox7.Text}', ip_pc='{textBox8.Text}'	WHERE id={label15.Text};", conn);
-            cmd.ExecuteNonQuery();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -258,6 +166,7 @@ namespace Phonebook
 
         private void button4_Click(object sender, EventArgs e)
         {
+
             NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
             try
             {
@@ -276,26 +185,7 @@ namespace Phonebook
                 conn.Close();
             }
 
-
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
-            try
-            {
-                NpgsqlCommand cmd = new NpgsqlCommand($@"DELETE FROM public.b4_user WHERE id={label15.Text};", conn);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show($"Пользователь удален:\r\n{textBox1.Text}\r\n{textBox2.Text}\r\n{textBox3.Text}\r\n{textBox4.Text}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
     }
 }

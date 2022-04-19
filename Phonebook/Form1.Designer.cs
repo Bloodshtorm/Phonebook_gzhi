@@ -54,6 +54,7 @@ namespace Phonebook
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.Add_user_tool = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -104,7 +105,8 @@ namespace Phonebook
             // adminoptionToolStripMenuItem
             // 
             this.adminoptionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.adduserToolStripMenuItem});
+            this.adduserToolStripMenuItem,
+            this.Add_user_tool});
             this.adminoptionToolStripMenuItem.Name = "adminoptionToolStripMenuItem";
             this.adminoptionToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.adminoptionToolStripMenuItem.Text = "Свойства";
@@ -271,6 +273,13 @@ namespace Phonebook
             this.label7.TabIndex = 16;
             this.label7.Text = "Эл. почта";
             // 
+            // Add_user_tool
+            // 
+            this.Add_user_tool.Name = "Add_user_tool";
+            this.Add_user_tool.Size = new System.Drawing.Size(204, 22);
+            this.Add_user_tool.Text = "Добавить сотрудника";
+            this.Add_user_tool.Click += new System.EventHandler(this.Add_user_tool_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -333,6 +342,7 @@ namespace Phonebook
         private System.Windows.Forms.ToolStripMenuItem adminoptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem adduserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выгрузкаВEXCELToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Add_user_tool;
     }
 }
 

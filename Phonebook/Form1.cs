@@ -8,6 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using ClosedXML;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace Phonebook
 {
@@ -15,7 +18,8 @@ namespace Phonebook
     {
         ///Переменная для отображения
         public static Privilages adm_priv = Privilages.User;
-        public static string connStr = "Server=10.0.77.14; Port = 5432; Database=bars_bd;User ID=postgres;Password=1234;CommandTimeout=60000;";
+        //public static string connStr = "Server = 10.0.77.9; Port = 5433; Database=bd_bars;User ID = postgres; Password=ltkjvfytckjdjv777;CommandTimeout=60000;";
+        public static string connStr = "Server = 46.0.207.122; Port = 5433; Database=bd_bars;User ID = bars; Password=ltkjvfytckjdjv777;CommandTimeout=60000;";
         public Form1()
         {
             InitializeComponent();
@@ -50,7 +54,7 @@ namespace Phonebook
                             join b4_position p on p.id=u.id_position
                             join b4_otdel o on o.id=u.id_otdel
                             join b4_control c on c.id= u.id_control
-                            ORDER BY 1";
+                            ORDER BY u.name";
             try
             {
                 NpgsqlConnection conn = new NpgsqlConnection(connStr);
@@ -108,22 +112,29 @@ namespace Phonebook
                 dataGridView1.Columns[13].Visible = false;
                 dataGridView1.Columns[14].Visible = false;
                 adminoptionToolStripMenuItem.Visible = false;
+                adduserToolStripMenuItem.Visible = false;
+                Add_user_tool.Visible = false;
                 updateToolStripMenuItem.Visible = false;
             }
             else
             {
-                dataGridView1.Columns[0].Visible = true;
-                dataGridView1.Columns[4].Visible = true;
-                dataGridView1.Columns[6].Visible = true;
-                dataGridView1.Columns[8].Visible = true;
+                
+                adminoptionToolStripMenuItem.Visible = true;
+                Add_user_tool.Visible = true;
                 //будущее
                 if (val == Privilages.Admin)
                 {
+                    dataGridView1.Columns[0].Visible = true;
+                    dataGridView1.Columns[4].Visible = true;
+                    dataGridView1.Columns[6].Visible = true;
+                    dataGridView1.Columns[8].Visible = true;
                     dataGridView1.Columns[11].Visible = true;
                     dataGridView1.Columns[12].Visible = true;
                     dataGridView1.Columns[13].Visible = true;
                     dataGridView1.Columns[14].Visible = true;
                     adminoptionToolStripMenuItem.Visible = true;
+                    adduserToolStripMenuItem.Visible = true;
+                    Add_user_tool.Visible = true;
                     updateToolStripMenuItem.Visible = true;
                 }
             }
@@ -242,11 +253,141 @@ namespace Phonebook
         private void выгрузкаВEXCELToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+            string filePath = "";
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.InitialDirectory = "c:\\";
+                saveFileDialog.FileName = "Телефонная книга" + DateTime.Now.ToString("dd_MM_yyyy");
+                saveFileDialog.Filter = "Файл Excel (*.xlsx)|*.xlsx";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = saveFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    //var fileStream = saveFileDialog.OpenFile();
+
+                }
+            }
+
+            //MessageBox.Show(filePath, "", MessageBoxButtons.OK);
+
+            if (filePath != "")
+            {
+                //DataTable dtSource = new DataTable();
+                //DataView dv = (DataView)(dataGridView1.DataSource);
+                string cmdText = $"SELECT u.name \"ФИО сотрудника\", u.office_room \"Местоположение\", u.phone \"Телефон\"," +
+                    "p.name \"Должность\",o.name \"Отдел\", c.name \"Управление\", u.email \"Эл.почта\", p.\"Gradation\"," +
+                    "o.\"Gradation\", c.\"Gradation\" FROM public.b4_user u join b4_position p on p.id=u.id_position join " +
+                    "b4_otdel o on o.id=u.id_otdel join b4_control c on c.id= u.id_control ORDER BY  c.\"Gradation\", o.\"Gradation\", p.\"Gradation\"";
+                NpgsqlConnection conn = new NpgsqlConnection(connStr);
+                NpgsqlCommand nc = new NpgsqlCommand(cmdText, conn);
+
+                XLWorkbook xLWorkbook = new XLWorkbook();
+                List<string> headerTable = new List<string>(); //получение заголовков
+                headerTable.Add("ФИО сотрудника");
+                headerTable.Add("Местоположение");
+                headerTable.Add("Телефон");
+                headerTable.Add("Должность");
+                headerTable.Add("Эл.почта");
+
+                var excelworksheet = xLWorkbook.Worksheets.Add("Выгрузка");
+
+                conn.Open();
+                NpgsqlDataReader ndr = nc.ExecuteReader();
+                string otdel = "";
+                string upr = "";
+                //string strok_csv = "";
+                try
+                {
+                    for (int i = 1; i < headerTable.Count + 1; i++)
+                    {
+                        excelworksheet.Cell(1, i).Style.Fill.BackgroundColor = XLColor.Yellow;
+                        excelworksheet.Columns(1, i).AdjustToContents();
+                        excelworksheet.Cell(1, i).Value = headerTable[i - 1].ToString();
+                    }
+
+                    if (ndr.HasRows)
+                    {
+                        int z = 2;
+                        while (ndr.Read())
+                        {
+                            if (upr != ndr.GetValue(5).ToString())
+                            {
+                                upr = ndr.GetValue(5).ToString();
+                                excelworksheet.Cell(z, 1).Value = ndr.GetValue(5);
+                                excelworksheet.Range("A" + z.ToString() + ":E" + z.ToString()).Row(1).Merge();
+                                excelworksheet.Cell(z, 1).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                                excelworksheet.Cell(z, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                                excelworksheet.Cell(z, 1).Style.Fill.BackgroundColor = XLColor.FromArgb(220, 230, 241);
+                                z++;
+                            }
+                            if (otdel != ndr.GetValue(4).ToString() && ndr.GetValue(4).ToString() != "-")
+                            {
+                                otdel = ndr.GetValue(4).ToString();
+                                excelworksheet.Cell(z, 1).Value = ndr.GetValue(4);
+                                excelworksheet.Range("A" + z.ToString() + ":E" + z.ToString()).Row(1).Merge();
+                                excelworksheet.Cell(z, 1).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                                excelworksheet.Cell(z, 1).Style.Fill.BackgroundColor = XLColor.FromArgb(253, 233, 217);
+                                z++;
+                            }
+
+                            try
+                            {
+                                excelworksheet.Cell(z, 1).Value = ndr.GetValue(0);
+                                excelworksheet.Cell(z, 2).Value = ndr.GetValue(1);
+                                excelworksheet.Cell(z, 3).Value = ndr.GetValue(2);
+                                excelworksheet.Cell(z, 4).Value = ndr.GetValue(3);
+                                excelworksheet.Cell(z, 5).Value = ndr.GetValue(6);
+                            }
+                            catch (System.InvalidCastException)
+                            {
+                            }
+                            z++;
+                        }
+                        //excelworksheet.Range("A1", "E" + z.ToString()).Style.Border.TopBorder = XLBorderStyleValues.Dotted;
+                        excelworksheet.Range("A1", "E" + (z - 1).ToString()).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        excelworksheet.Range("A1", "E" + (z - 1).ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        excelworksheet.Range("A1", "E" + (z - 1).ToString()).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        excelworksheet.Range("A1", "E" + (z - 1).ToString()).Style.Border.DiagonalBorder = XLBorderStyleValues.Thin;
+                        excelworksheet.Range("A1", "E1").Style.Border.OutsideBorder = XLBorderStyleValues.Medium;
+
+                        //excelworksheet.Range("A1", "E" + z.ToString()).Style.Border.TopBorder = XLBorderStyleValues.Dotted;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не обнаружены строки для записи в csv");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    ndr.Close();
+                }
+                excelworksheet.Columns().AdjustToContents();
+                xLWorkbook.SaveAs(filePath);
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void Add_user_tool_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(Privilages.Dev.ToString());
+            int z = (int)(dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value);
+            Add_user eu = new Add_user(adm_priv);
+            eu.ShowDialog();
+            if (eu.DialogResult == DialogResult.OK)
+            Data();
         }
     }
 }

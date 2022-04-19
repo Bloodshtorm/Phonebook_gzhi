@@ -81,7 +81,10 @@ namespace Phonebook
             }
             else
             {
-                MessageBox.Show("654363");
+                cmd = new NpgsqlCommand($"INSERT INTO public.\"user\"(login, hash, role) VALUES('{textBox2.Text}', '{HashPassword(textBox1.Text)}', '{comboBox1.SelectedItem}'); ", conn);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Пользователь добавлен!");
+                conn.Close();
             }
         }
 
@@ -156,5 +159,9 @@ namespace Phonebook
             return 0 == xor;
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
