@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -113,7 +114,7 @@ namespace Phonebook
             {
                 MessageBox.Show(ex.Message);
             }
-
+            GC.Collect();
             cmd = new NpgsqlCommand(cmdText, conn);
             try
             {
@@ -191,12 +192,19 @@ namespace Phonebook
             {
                 label12.Text = "1";
             }
-            //MessageBox.Show("dsa");
-            NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand($@"UPDATE public.b4_user SET name='{textBox1.Text}', office_room='{textBox2.Text}', phone='{textBox3.Text}', 
-            id_position={label10.Text}, id_otdel={label11.Text}, id_control={label12.Text}, email='{textBox4.Text}', email_pass='{textBox5.Text}', 
-            name_pc='{textBox6.Text}', pc_pass='{textBox7.Text}', ip_pc='{textBox8.Text}'	WHERE id={label15.Text};", conn);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                NpgsqlConnection conn = new NpgsqlConnection(Form1.connStr); conn.Open();
+                NpgsqlCommand cmd = new NpgsqlCommand($@"UPDATE public.b4_user SET name='{textBox1.Text}', office_room='{textBox2.Text}', phone='{textBox3.Text}', 
+                id_position={label10.Text}, id_otdel={label11.Text}, id_control={label12.Text}, email='{textBox4.Text}', email_pass='{textBox5.Text}', 
+                name_pc='{textBox6.Text}', pc_pass='{textBox7.Text}', ip_pc='{textBox8.Text}'	WHERE id={label15.Text};", conn);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("dsa");
+            }
+            catch
+            {
+
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -273,6 +281,7 @@ namespace Phonebook
             }
             finally
             {
+                GC.Collect();
                 conn.Close();
             }
 
@@ -294,7 +303,65 @@ namespace Phonebook
             }
             finally
             {
+                GC.Collect();
                 conn.Close();
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string[] words = textBox1.Text.Trim().Split(new char[] { ' ' });
+            string f = words[0].Trim();
+            string i = words[1].Trim().Substring(0, 1);
+            string o = words[2].Trim().Substring(0, 1);
+
+            string filePath = "";
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.InitialDirectory = "c:\\";
+                saveFileDialog.FileName = f;
+                saveFileDialog.Filter = "Файл Контакта (*.vcf)|*.vcf";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = saveFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    //var fileStream = saveFileDialog.OpenFile();
+
+                }
+            }
+
+            try
+            {
+                if(filePath!=null && filePath!="")
+                {
+                    FileStream vcf = new FileStream(filePath, FileMode.Create);
+                
+                    using (StreamWriter writer = new StreamWriter(vcf, Encoding.Default))
+                    {
+                        writer.Write("BEGIN:VCARD\r\n");
+                        writer.Write("VERSION:2.1\r\n");
+                        writer.Write($"N;LANGUAGE=ru;CHARSET=windows-1251:{f} {i}. {o}.\r\n");
+                        writer.Write($"FN;CHARSET=windows-1251:{f} {i}. {o}.\r\n");
+                        writer.Write($"ORG;CHARSET=windows-1251:{comboBox2.SelectedItem.ToString()}\r\n");
+                        writer.Write($"TITLE;CHARSET=windows-1251:{comboBox1.SelectedItem.ToString()}\r\n");
+                        writer.Write("X-MS-OL-DEFAULT-POSTAL-ADDRESS:0\r\n");
+                        writer.Write($"EMAIL;PREF;INTERNET:{textBox4.Text}\r\n");
+                        writer.Write("X-MS-OL-DESIGN;CHARSET=utf-8:<card xmlns=\"http://schemas.microsoft.com/office/outlook/12/electronicbusinesscards\" ver=\"1.0\" layout=\"left\" bgcolor=\"ffffff\"><img xmlns=\"\" align=\"fit\" area=\"16\" use=\"cardpicture\"/><fld xmlns=\"\" prop=\"name\" align=\"left\" dir=\"ltr\" style=\"b\" color=\"000000\" size=\"10\"/><fld xmlns=\"\" prop=\"org\" align=\"left\" dir=\"ltr\" color=\"000000\" size=\"8\"/><fld xmlns=\"\" prop=\"title\" align=\"left\" dir=\"ltr\" color=\"000000\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"email\" align=\"left\" dir=\"ltr\" color=\"000000\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/><fld xmlns=\"\" prop=\"blank\" size=\"8\"/></card>\r\n");
+                        writer.Write("REV:20220427T082148Z\r\n");
+                        writer.Write("END:VCARD\r\n");
+                    }
+                    vcf.Close();
+                    MessageBox.Show("Контакт '" + textBox1.Text + "' успешно выгружен!");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
